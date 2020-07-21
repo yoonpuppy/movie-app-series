@@ -88,4 +88,18 @@ router.post('/getFavoritedMovie', (req, res) => {
 })
 
 
+
+// #14 6:50
+router.post('/api/favorite/removeFromFavorite', (req, res) => {
+
+
+    Favorite.findOneAndDelete({ movieId: req.body.movieId, userFrom: req.body.userFrom })
+        .exec((err, results) => {
+            if(err) return res.status(400).send(err)
+            return res.status(200).json({ success: true})
+        })
+
+})
+
+
 module.exports = router;

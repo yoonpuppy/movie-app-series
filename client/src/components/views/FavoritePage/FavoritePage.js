@@ -1,18 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import './favorite.css';
 import Axios from 'axios';
+// #14 
+import { Popover } from 'antd';
+import { IMAGE_BASE_URL } from '../../Config'
 
 
 function FavoritePage() {
 
     // #13 10:30 
-        // 가져온 영화 정보 (console.log(response.data)) State에 넣기
-        const [Favorites, setFavorites] = useState([])
+    // 가져온 영화 정보 (console.log(response.data)) State에 넣기
+    const [Favorites, setFavorites] = useState([])
 
     useEffect(() => {
 
         
-        // #13 7:00
+        fetchFavoritedMovie()
+
+
+        
+    }, [])
+
+    // #14 9:40
+    const fetchFavoritedMovie = () => {
         Axios.post('/api/favorite/getFavoritedMovie', { userFrom: localStorage.getItem('userId')})
             .then(response => {
                 if(response.data.success) {
@@ -24,12 +34,52 @@ function FavoritePage() {
                     alert('영화 정보를 가져오는데 실패')
                 }
             })
+    }
 
+    // #14 3:00
+    const renderCards = Favorites.map((favorite, index) => {
 
+        const content = (
+            <div>
+                {favorite.moviePost ?
+                
+                    <img src={`${IMAGE_BASE_URL}w500${favorite.moviePost}`} /> : "no image"
+                    
+                }
+            </div>
+
+        )
+
+        return <tr key={index}>
+            
+            <Popover content={content} title={`${favorite.movieTitle}`}>
+                <td>{favorite.movieTitle}</td>
+            </Popover>
+            
+            <td>{favorite.movieRunTime} mins</td>
+            <td><button onClick={() => onClickDelete(favorite.movieId, favorite.userFrom)}>Remove</button></td>
+
+        </tr>
+    })
+
+    // #14 5:00
+    const onClickDelete = (movieId, userFrom) => {
         
-        
-    }, [])
+        const variables = {
+            movieId,
+            userFrom
+        }
 
+        Axios.post('/api/favorite/removeFromFavorite', variables)
+            .then(response => {
+                if(response.data.success) {
+                    fetchFavoritedMovie()
+                } else {
+                    alert("리스트에서 지우는데 실패했습니다.")
+                }
+            })
+
+    }
 
 
     return (
@@ -47,15 +97,7 @@ function FavoritePage() {
                 </thead>
                 <tbody>
 
-                {/* #13 11:40 */Favorites.map((favorite, index) => (
-                    <tr key={index}>
-                        
-                        <td>{favorite.movieTitle}</td>
-                        <td>{favorite.movieRunTime} mins</td>
-                        <td><button>Remove</button></td>
-
-                    </tr>
-                ))}
+                {renderCards}
 
                 </tbody>
             </table>
