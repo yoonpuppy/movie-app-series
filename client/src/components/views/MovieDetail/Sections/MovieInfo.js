@@ -3,6 +3,7 @@ import { Descriptions, Badge } from 'antd';
 
 function MovieInfo(props) {
 
+    // MovieDetail 의 Movie 정보 를 movie 로 props 해줌
     let { movie } = props;
 
     return (
@@ -16,7 +17,7 @@ function MovieInfo(props) {
             </Descriptions.Item>
             <Descriptions.Item label="vote_count">{movie.vote_count}</Descriptions.Item>
             <Descriptions.Item label="status">{movie.status}</Descriptions.Item>
-            <Descriptions.Item label="popularity">{movie}</Descriptions.Item>
+            <Descriptions.Item label="popularity">{movie.popularity}</Descriptions.Item>
         </Descriptions>
     )
 }

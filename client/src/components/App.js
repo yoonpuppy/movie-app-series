@@ -9,6 +9,8 @@ import NavBar from "./views/NavBar/NavBar";
 import Footer from "./views/Footer/Footer";
 // #7 5:00 , 5:30 line 26 :movieId 설명
 import MovieDetail from "./views/MovieDetail/MovieDetail";
+// #13 Favorite Page 2:00 log in 한 사람만 볼 수 있게 true
+import FavoritePage from "./views/FavoritePage/FavoritePage";
 
 //null   Anyone Can go inside
 //true   only logged in user can go inside
@@ -23,7 +25,8 @@ function App() {
           <Route exact path="/" component={Auth(LandingPage, null)} />
           <Route exact path="/login" component={Auth(LoginPage, false)} />
           <Route exact path="/register" component={Auth(RegisterPage, false)} />
-          <Route exact path="/movie/:movieId" component={Auth(MovieDetail, false)} />
+          <Route exact path="/movie/:movieId" component={Auth(MovieDetail, null)} />
+          <Route exact path="/favorite" component={Auth(FavoritePage, true)} />
         </Switch>
       </div>
       <Footer />
